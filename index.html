@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TMS Pro - Training Management System</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #94a3b8;
+      border-radius: 10px;
+    }
+
+    body {
+      font-family: Inter, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #4f46e5 45%, #6366f1 100%);
+      color: #0f172a;
+    }
+
+    .menu-active {
+      background: rgba(255,255,255,0.15);
+    }
+
+    .auth-card {
+      background: rgba(255,255,255,0.96);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(148,163,184,0.18);
+      box-shadow: 0 30px 90px rgba(15,23,42,0.16);
+    }
+
+    .auth-step {
+      transition: opacity .3s ease, transform .3s ease;
+    }
+
+    .tab-pill {
+      transition: all .25s ease;
+      border-radius: 9999px;
+    }
+
+    .tab-pill.active {
+      box-shadow: 0 18px 40px rgba(79,70,229,0.16);
+    }
+
+    .button-glow:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 22px 45px rgba(79,70,229,0.18);
+    }
+
+    #photoPreview {
+      object-fit: cover;
+      max-height: 224px;
+    }
+
+    .highlight-text {
+      background: linear-gradient(90deg, #a855f7, #3b82f6, #06b6d4);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+  </style>
+</head>
+
+<body class="bg-slate-100">
+
+<div id="login" class="min-h-screen flex items-center justify-center px-4">
+  <div class="auth-card rounded-[2rem] shadow-2xl p-8 w-full max-w-3xl mx-auto">
+    <div class="grid gap-8 lg:grid-cols-[1.2fr_1fr]">
+      <div class="space-y-6">
+        <div class="rounded-3xl bg-slate-950/90 p-6 text-white shadow-lg">
+          <p class="text-sm uppercase tracking-[.3em] text-slate-200">TMS Pro</p>
+          <h1 class="mt-4 text-3xl font-bold">Masuk ke Aplikasi Pelatihan</h1>
+          <p id="heroSubtitle" class="mt-3 text-slate-300 transition-all duration-500">Masuk dengan akun terdaftar atau daftar baru dengan data pribadi lengkap dan foto profil.</p>
+        </div>
+
+        <div class="flex rounded-2xl overflow-hidden border border-slate-200 bg-slate-50">
+          <button id="tabPassword" class="flex-1 py-4 text-sm font-semibold bg-white text-slate-900 tab-pill active">Login Password</button>
+          <button id="tabSelfie" class="flex-1 py-4 text-sm font-semibold text-slate-500 tab-pill">Login Selfie</button>
+          <button id="tabSignup" class="flex-1 py-4 text-sm font-semibold text-slate-500 tab-pill">Sign Up</button>
+        </div>
+
+        <div id="passwordLogin" class="auth-step space-y-4">
+          <form id="loginForm" class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium mb-2">Email Terdaftar</label>
+              <input type="email" id="email" required class="w-full rounded-2xl border border-slate-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="name@company.com">
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2">Password</label>
+              <input type="password" id="password" required class="w-full rounded-2xl border border-slate-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Masukkan kata sandi Anda">
+            </div>
+            <button type="submit" class="w-full rounded-2xl bg-indigo-600 py-3 text-white shadow-lg transition hover:bg-indigo-700 button-glow">Masuk Sekarang</button>
+          </form>
+          <p class="text-sm text-slate-500">Gunakan email dan password dari akun yang sudah terdaftar untuk mengakses aplikasi.</p>
+        </div>
+
+        <div id="selfieLogin" class="auth-step hidden space-y-4">
+          <form id="selfieForm" class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium mb-2">Email Terdaftar</label>
+              <input type="email" id="emailSelfie" required class="w-full rounded-2xl border border-slate-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="name@company.com">
+            </div>
+            <div class="space-y-3">
+              <button type="button" id="startCamera" class="w-full rounded-2xl border border-indigo-600 bg-white py-3 text-indigo-600 transition hover:bg-indigo-50 button-glow">Mulai Scan Selfie</button>
+              <div id="selfieArea" class="hidden space-y-3">
+                <video id="selfieVideo" autoplay muted playsinline class="w-full rounded-2xl border border-slate-200 bg-black"></video>
+                <button type="button" id="captureSelfie" class="w-full rounded-2xl bg-emerald-600 py-3 text-white transition hover:bg-emerald-700 button-glow">Ambil Foto Selfie</button>
+                <p id="selfieStatus" class="text-sm text-slate-600">Tekan tombol "Ambil Foto Selfie" setelah kamera aktif.</p>
+              </div>
+            </div>
+            <button type="submit" class="w-full rounded-2xl bg-indigo-600 py-3 text-white shadow-lg transition hover:bg-indigo-700 button-glow">Masuk dengan Selfie</button>
+          </form>
+          <p class="text-sm text-slate-500">Login hanya dengan foto selfie dan email terdaftar.</p>
+        </div>
+
+        <div id="signupLogin" class="auth-step hidden space-y-4">
+          <form id="signupForm" class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium mb-2">No. Registrasi Karyawan</label>
+              <input type="text" id="noreg" required class="w-full rounded-2xl border border-slate-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Noreg Karyawan">
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2">Nama Lengkap</label>
+              <input type="text" id="fullname" required class="w-full rounded-2xl border border-slate-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Nama Anda">
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2">Email</label>
+              <input type="email" id="signupEmail" required class="w-full rounded-2xl border border-slate-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="name@company.com">
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2">Password</label>
+              <input type="password" id="signupPassword" required class="w-full rounded-2xl border border-slate-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Buat kata sandi">
+            </div>
+            <div class="grid gap-4 md:grid-cols-2">
+              <div>
+                <label class="block text-sm font-medium mb-2">Departemen</label>
+                <input type="text" id="department" class="w-full rounded-2xl border border-slate-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Departemen">
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-2">Role</label>
+                <select id="role" class="w-full rounded-2xl border border-slate-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                  <option value="karyawan">Karyawan</option>
+                  <option value="admin">Admin</option>
+                  <option value="super admin">Super Admin</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2">Foto Profil</label>
+              <input type="file" id="photoUpload" accept="image/*" class="w-full rounded-2xl border border-slate-200 px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+            <div class="hidden rounded-3xl border border-indigo-300 p-4 bg-slate-50" id="photoPreviewWrapper">
+              <p class="text-sm text-slate-500 mb-2">Preview Foto:</p>
+              <img id="photoPreview" class="w-full rounded-3xl object-cover h-56" src="" alt="Preview Foto" />
+            </div>
+            <button type="submit" class="w-full rounded-2xl bg-emerald-600 py-3 text-white shadow-lg transition hover:bg-emerald-700 button-glow">Daftar Sekarang</button>
+          </form>
+          <p class="text-sm text-slate-500">Daftar akun baru untuk login dengan foto dan data karyawan lengkap.</p>
+        </div>
+      </div>
+
+      <div class="relative hidden rounded-[2rem] bg-gradient-to-br from-indigo-700 via-slate-900 to-slate-700 p-6 text-white lg:block">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(192,132,252,0.25),_transparent_32%)]"></div>
+        <div class="relative space-y-6">
+          <p class="text-sm uppercase tracking-[.3em] text-slate-300">Modern Security</p>
+          <h2 class="text-3xl font-bold">Pengalaman Login yang Lebih Cepat</h2>
+          <p class="text-slate-200">Selfie scan memberikan akses instan dan lebih personal, dengan kontrol role karyawan, admin, serta super admin.</p>
+          <div class="grid gap-4">
+            <div class="rounded-3xl bg-white/10 p-5">
+              <p class="font-semibold">Role Karyawan</p>
+              <p class="text-sm text-slate-300">Akses training, jadwal, dan evaluasi.</p>
+            </div>
+            <div class="rounded-3xl bg-white/10 p-5">
+              <p class="font-semibold">Role Admin</p>
+              <p class="text-sm text-slate-300">Akses data karyawan, laporan, dan kompetensi.</p>
+            </div>
+            <div class="rounded-3xl bg-white/10 p-5">
+              <p class="font-semibold">Super Admin</p>
+              <p class="text-sm text-slate-300">Kontrol penuh sistem dan pengaturan.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="mt-8 text-center text-sm text-slate-400">Tersedia untuk demo, cukup gunakan kamera perangkat untuk memindai selfie.</p>
+  </div>
+</div>
+
+<div id="main" class="hidden">
+
+<div class="flex h-screen overflow-hidden">
+
+  <!-- SIDEBAR -->
+  <aside id="sidebar"
+    class="w-72 bg-indigo-700 text-white flex flex-col transition-all duration-300">
+
+    <div class="p-6 border-b border-indigo-500">
+      <h1 class="text-2xl font-bold">TMS PRO</h1>
+      <p class="text-sm text-indigo-200 mt-1">
+        Training Management System
+      </p>
+    </div>
+
+    <nav class="flex-1 overflow-y-auto p-4 space-y-2">
+
+      <button onclick="loadPage('dashboard')"
+        class="menu-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 transition">
+        <i data-lucide="layout-dashboard"></i>
+        Dashboard
+      </button>
+
+      <button onclick="loadPage('employees')"
+        class="menu-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 transition">
+        <i data-lucide="users"></i>
+        Karyawan
+      </button>
+
+      <button onclick="loadPage('trainings')"
+        class="menu-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 transition">
+        <i data-lucide="graduation-cap"></i>
+        Training
+      </button>
+
+      <button onclick="loadPage('schedule')"
+        class="menu-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 transition">
+        <i data-lucide="calendar-days"></i>
+        Jadwal
+      </button>
+
+      <button onclick="loadPage('attendance')"
+        class="menu-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 transition">
+        <i data-lucide="clipboard-check"></i>
+        Absensi
+      </button>
+
+      <button onclick="loadPage('evaluation')"
+        class="menu-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 transition">
+        <i data-lucide="star"></i>
+        Evaluasi
+      </button>
+
+      <button onclick="loadPage('competency')"
+        class="menu-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 transition">
+        <i data-lucide="brain-circuit"></i>
+        Kompetensi
+      </button>
+
+      <button onclick="loadPage('reports')"
+        class="menu-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 transition">
+        <i data-lucide="file-text"></i>
+        Reports
+      </button>
+
+      <button onclick="loadPage('settings')"
+        class="menu-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 transition">
+        <i data-lucide="settings"></i>
+        Settings
+      </button>
+
+    </nav>
+
+    <div class="p-4 border-t border-indigo-500">
+      <div class="bg-white/10 rounded-xl p-4">
+        <p class="font-semibold">HR Department</p>
+        <p class="text-sm text-indigo-200">
+          Training Administrator
+        </p>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- MAIN -->
+  <div class="flex-1 flex flex-col overflow-hidden">
+
+    <!-- TOPBAR -->
+    <header class="bg-white border-b border-slate-200 px-6 py-4">
+
+      <div class="flex justify-between items-center">
+
+        <div class="flex items-center gap-4">
+
+          <button onclick="toggleSidebar()"
+            class="p-2 rounded-lg hover:bg-slate-100">
+            <i data-lucide="menu"></i>
+          </button>
+
+          <div>
+            <h2 class="text-2xl font-bold text-slate-800">
+              Training Dashboard
+            </h2>
+            <p class="text-sm text-slate-500">
+              Employee Training Management
+            </p>
+          </div>
+
+        </div>
+
+        <div class="flex items-center gap-4">
+
+          <div class="relative">
+            <input type="text"
+              placeholder="Search..."
+              class="pl-10 pr-4 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <i data-lucide="search"
+              class="absolute left-3 top-2.5 w-4 h-4 text-slate-400"></i>
+          </div>
+
+          <button class="relative p-2 rounded-xl hover:bg-slate-100">
+            <i data-lucide="bell"></i>
+            <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+          </button>
+
+          <div class="flex items-center gap-3">
+            <img src="https://i.pravatar.cc/40"
+              class="w-10 h-10 rounded-full">
+
+            <div>
+              <p class="font-semibold text-sm">Admin HRD</p>
+              <p class="text-xs text-slate-500">Super Admin</p>
+            </div>
+          </div>
+
+          <button onclick="logout()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-xl ml-4">Logout</button>
+
+        </div>
+
+      </div>
+
+    </header>
+
+    <!-- CONTENT -->
+    <main id="app"
+      class="flex-1 overflow-y-auto p-6">
+
+    </main>
+
+  </div>
+
+</div>
+
+<script>
+
+const defaultUsers = [
+  {email: 'employee@example.com', password: 'pass', role: 'karyawan', noreg: 'EMP001', fullname: 'Budi Santoso', department: 'Production', photo: ''},
+  {email: 'admin@example.com', password: 'pass', role: 'admin', noreg: 'ADM001', fullname: 'Siti Aminah', department: 'HRD', photo: ''},
+  {email: 'super@example.com', password: 'pass', role: 'super admin', noreg: 'SUP001', fullname: 'Rina Sari', department: 'Manajemen', photo: ''}
+];
+
+let users = getStoredUsers();
+let selfieStream = null;
+let selfieCaptured = false;
+
+function getStoredUsers() {
+  try {
+    const saved = localStorage.getItem('tmsUsers');
+    return saved ? JSON.parse(saved) : [...defaultUsers];
+  } catch (err) {
+    return [...defaultUsers];
+  }
+}
+
+function saveUsers() {
+  localStorage.setItem('tmsUsers', JSON.stringify(users));
+}
+
+function addUser(user) {
+  users.push(user);
+  saveUsers();
+}
+
+function checkLogin() {
+  const loggedIn = localStorage.getItem('loggedIn');
+  if(loggedIn) {
+    document.getElementById('login').style.display = 'none';
+    document.getElementById('main').style.display = 'block';
+    loadPage('dashboard');
+  }
+}
+
+function logout() {
+  stopCamera();
+  localStorage.removeItem('loggedIn');
+  localStorage.removeItem('role');
+  location.reload();
+}
+
+function setLoginMode(mode) {
+  const passwordLogin = document.getElementById('passwordLogin');
+  const selfieLogin = document.getElementById('selfieLogin');
+  const signupLogin = document.getElementById('signupLogin');
+  const tabPassword = document.getElementById('tabPassword');
+  const tabSelfie = document.getElementById('tabSelfie');
+  const tabSignup = document.getElementById('tabSignup');
+  const tabs = [tabPassword, tabSelfie, tabSignup];
+
+  tabs.forEach(tab => {
+    tab.classList.remove('bg-white', 'text-slate-900', 'active');
+    tab.classList.add('text-slate-500');
+  });
+
+  passwordLogin.classList.add('hidden');
+  selfieLogin.classList.add('hidden');
+  signupLogin.classList.add('hidden');
+
+  if(mode === 'password') {
+    passwordLogin.classList.remove('hidden');
+    tabPassword.classList.add('bg-white', 'text-slate-900', 'active');
+    stopCamera();
+  } else if(mode === 'selfie') {
+    selfieLogin.classList.remove('hidden');
+    tabSelfie.classList.add('bg-white', 'text-slate-900', 'active');
+  } else {
+    signupLogin.classList.remove('hidden');
+    tabSignup.classList.add('bg-white', 'text-slate-900', 'active');
+    stopCamera();
+  }
+}
+
+function animateHeroSubtitle() {
+  const subtitle = document.getElementById('heroSubtitle');
+  if (!subtitle) return;
+  setInterval(() => {
+    subtitle.classList.toggle('text-emerald-200');
+  }, 3000);
+}
+
+async function startCamera() {
+  try {
+    const video = document.getElementById('selfieVideo');
+    selfieStream = await navigator.mediaDevices.getUserMedia({ video: true });
+    video.srcObject = selfieStream;
+    document.getElementById('selfieArea').classList.remove('hidden');
+    document.getElementById('selfieStatus').textContent = 'Kamera aktif. Arahkan wajah dan ambil foto selfie.';
+    document.getElementById('selfieStatus').classList.remove('text-rose-500');
+  } catch (err) {
+    alert('Tidak dapat mengakses kamera. Pastikan izin kamera diberikan.');
+  }
+}
+
+function stopCamera() {
+  if(selfieStream) {
+    selfieStream.getTracks().forEach(track => track.stop());
+    selfieStream = null;
+  }
+  const video = document.getElementById('selfieVideo');
+  if(video) {
+    video.srcObject = null;
+  }
+}
+
+function captureSelfie() {
+  const video = document.getElementById('selfieVideo');
+  const selfieStatus = document.getElementById('selfieStatus');
+  if(!video || !video.srcObject) {
+    selfieStatus.textContent = 'Kamera belum aktif. Klik Mulai Scan Selfie terlebih dahulu.';
+    selfieStatus.classList.add('text-rose-500');
+    return;
+  }
+  const canvas = document.createElement('canvas');
+  canvas.width = video.videoWidth || 640;
+  canvas.height = video.videoHeight || 480;
+  canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+  selfieCaptured = true;
+  selfieStatus.textContent = 'Foto selfie berhasil diambil. Lanjutkan dengan menekan tombol Masuk dengan Selfie.';
+  selfieStatus.classList.remove('text-rose-500');
+  selfieStatus.classList.add('text-emerald-600');
+}
+
+function previewPhoto(event) {
+  const file = event.target.files[0];
+  const previewWrapper = document.getElementById('photoPreviewWrapper');
+  const previewImage = document.getElementById('photoPreview');
+  if(!file) {
+    previewWrapper.classList.add('hidden');
+    previewImage.src = '';
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = () => {
+    previewImage.src = reader.result;
+    previewWrapper.classList.remove('hidden');
+  };
+  reader.readAsDataURL(file);
+}
+
+function submitPasswordLogin(event) {
+  event.preventDefault();
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const user = users.find(u => u.email === email);
+  if(!user) {
+    alert('Email tidak terdaftar.');
+    return;
+  }
+  if(user.password !== password) {
+    alert('Password salah.');
+    return;
+  }
+  localStorage.setItem('loggedIn', 'true');
+  localStorage.setItem('role', user.role);
+  checkLogin();
+}
+
+function submitSelfieLogin(event) {
+  event.preventDefault();
+  const email = document.getElementById('emailSelfie').value.trim();
+  const user = users.find(u => u.email === email);
+  if(!user) {
+    alert('Email tidak terdaftar.');
+    return;
+  }
+  if(!selfieCaptured) {
+    alert('Silakan ambil foto selfie terlebih dahulu.');
+    return;
+  }
+  stopCamera();
+  localStorage.setItem('loggedIn', 'true');
+  localStorage.setItem('role', user.role);
+  checkLogin();
+}
+
+function submitSignup(event) {
+  event.preventDefault();
+  const noreg = document.getElementById('noreg').value.trim();
+  const fullname = document.getElementById('fullname').value.trim();
+  const email = document.getElementById('signupEmail').value.trim();
+  const password = document.getElementById('signupPassword').value;
+  const department = document.getElementById('department').value.trim();
+  const role = document.getElementById('role').value;
+  const photoInput = document.getElementById('photoUpload');
+  const photo = photoInput.files[0];
+
+  if(!noreg || !fullname || !email || !password || !department || !photo) {
+    alert('Lengkapi semua data dan unggah foto profil.');
+    return;
+  }
+
+  if(users.some(u => u.email === email)) {
+    alert('Email sudah terdaftar. Silakan gunakan email lain.');
+    return;
+  }
+
+  if(users.some(u => u.noreg === noreg)) {
+    alert('Noreg sudah digunakan. Silakan cek kembali.');
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    addUser({email, password, role, noreg, fullname, department, photo: reader.result});
+    alert('Pendaftaran berhasil. Silakan login dengan akun baru Anda.');
+    document.getElementById('signupForm').reset();
+    document.getElementById('photoPreviewWrapper').classList.add('hidden');
+    setLoginMode('password');
+  };
+  reader.readAsDataURL(photo);
+}
+
+function initAuth() {
+  setLoginMode('password');
+  document.getElementById('tabPassword').addEventListener('click', () => setLoginMode('password'));
+  document.getElementById('tabSelfie').addEventListener('click', () => setLoginMode('selfie'));
+  document.getElementById('tabSignup').addEventListener('click', () => setLoginMode('signup'));
+  document.getElementById('startCamera').addEventListener('click', startCamera);
+  document.getElementById('captureSelfie').addEventListener('click', captureSelfie);
+  document.getElementById('loginForm').addEventListener('submit', submitPasswordLogin);
+  document.getElementById('selfieForm').addEventListener('submit', submitSelfieLogin);
+  document.getElementById('signupForm').addEventListener('submit', submitSignup);
+  document.getElementById('photoUpload').addEventListener('change', previewPhoto);
+  animateHeroSubtitle();
+}
+
+initAuth();
+
+const pages = {
+
+dashboard: `
+<div class="space-y-6">
+
+  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+
+    <div class="bg-white rounded-2xl p-5 shadow-sm">
+      <p class="text-slate-500">Total Training</p>
+      <h2 class="text-4xl font-bold mt-2">125</h2>
+      <p class="text-emerald-500 mt-2 text-sm">+12% bulan ini</p>
+    </div>
+
+    <div class="bg-white rounded-2xl p-5 shadow-sm">
+      <p class="text-slate-500">Total Peserta</p>
+      <h2 class="text-4xl font-bold mt-2">2,540</h2>
+      <p class="text-emerald-500 mt-2 text-sm">+5% bulan ini</p>
+    </div>
+
+    <div class="bg-white rounded-2xl p-5 shadow-sm">
+      <p class="text-slate-500">Completion Rate</p>
+      <h2 class="text-4xl font-bold mt-2">92%</h2>
+      <p class="text-emerald-500 mt-2 text-sm">Excellent</p>
+    </div>
+
+    <div class="bg-white rounded-2xl p-5 shadow-sm">
+      <p class="text-slate-500">Budget Used</p>
+      <h2 class="text-4xl font-bold mt-2">78%</h2>
+      <p class="text-amber-500 mt-2 text-sm">Annual Budget</p>
+    </div>
+
+  </div>
+
+  <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+
+    <div class="xl:col-span-2 bg-white rounded-2xl p-6 shadow-sm">
+      <div class="flex justify-between mb-6">
+        <h3 class="font-bold text-lg">Training Statistics</h3>
+      </div>
+
+      <canvas id="trainingChart"></canvas>
+    </div>
+
+    <div class="bg-white rounded-2xl p-6 shadow-sm">
+
+      <h3 class="font-bold text-lg mb-6">
+        Upcoming Training
+      </h3>
+
+      <div class="space-y-4">
+
+        <div class="border border-slate-200 rounded-xl p-4">
+          <p class="font-semibold">Leadership Training</p>
+          <p class="text-sm text-slate-500 mt-1">
+            12 Mei 2026
+          </p>
+        </div>
+
+        <div class="border border-slate-200 rounded-xl p-4">
+          <p class="font-semibold">Safety Awareness</p>
+          <p class="text-sm text-slate-500 mt-1">
+            15 Mei 2026
+          </p>
+        </div>
+
+        <div class="border border-slate-200 rounded-xl p-4">
+          <p class="font-semibold">Problem Solving</p>
+          <p class="text-sm text-slate-500 mt-1">
+            20 Mei 2026
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="bg-white rounded-2xl p-6 shadow-sm">
+    <h3 class="font-bold text-lg mb-6">Training by Category</h3>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4 text-center">
+        <i data-lucide="cpu" class="w-8 h-8 text-blue-600 mx-auto mb-2"></i>
+        <p class="font-semibold text-sm">Technical</p>
+        <p class="text-2xl font-bold text-blue-700">45</p>
+      </div>
+      <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-4 text-center">
+        <i data-lucide="users" class="w-8 h-8 text-green-600 mx-auto mb-2"></i>
+        <p class="font-semibold text-sm">Soft Skills</p>
+        <p class="text-2xl font-bold text-green-700">32</p>
+      </div>
+      <div class="bg-gradient-to-br from-red-50 to-red-100 rounded-xl p-4 text-center">
+        <i data-lucide="shield" class="w-8 h-8 text-red-600 mx-auto mb-2"></i>
+        <p class="font-semibold text-sm">Safety</p>
+        <p class="text-2xl font-bold text-red-700">28</p>
+      </div>
+      <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-4 text-center">
+        <i data-lucide="trending-up" class="w-8 h-8 text-purple-600 mx-auto mb-2"></i>
+        <p class="font-semibold text-sm">Management</p>
+        <p class="text-2xl font-bold text-purple-700">20</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+`,
+
+employees: `
+<div class="bg-white rounded-2xl shadow-sm p-6">
+
+  <div class="flex justify-between items-center mb-6">
+
+    <div>
+      <h2 class="text-2xl font-bold">Master Karyawan</h2>
+      <p class="text-slate-500">
+        Data seluruh karyawan perusahaan
+      </p>
+    </div>
+
+    <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-3 rounded-xl">
+      + Tambah Karyawan
+    </button>
+
+  </div>
+
+  <div class="overflow-x-auto">
+
+    <table class="w-full">
+
+      <thead>
+        <tr class="border-b">
+          <th class="text-left py-3">NIK</th>
+          <th class="text-left py-3">Nama</th>
+          <th class="text-left py-3">Departemen</th>
+          <th class="text-left py-3">Jabatan</th>
+          <th class="text-left py-3">Status</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <tr class="border-b hover:bg-slate-50">
+          <td class="py-4">EMP001</td>
+          <td>Budi Santoso</td>
+          <td>Production</td>
+          <td>Operator</td>
+          <td>
+            <span class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-sm">
+              Active
+            </span>
+          </td>
+        </tr>
+
+        <tr class="border-b hover:bg-slate-50">
+          <td class="py-4">EMP002</td>
+          <td>Siti Aminah</td>
+          <td>HRD</td>
+          <td>Staff HR</td>
+          <td>
+            <span class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-sm">
+              Active
+            </span>
+          </td>
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>
+`,
+
+trainings: `
+<div class="space-y-6">
+
+  <div class="flex justify-between items-center">
+
+    <div>
+      <h2 class="text-2xl font-bold">Training Management</h2>
+      <p class="text-slate-500">
+        Kelola program pelatihan perusahaan
+      </p>
+    </div>
+
+    <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-3 rounded-xl">
+      + Create Training
+    </button>
+
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+
+    <div class="bg-white rounded-2xl p-6 shadow-sm">
+      <h3 class="font-bold text-lg">
+        Leadership Training
+      </h3>
+
+      <p class="text-slate-500 mt-2">
+        Softskill Development
+      </p>
+
+      <div class="mt-5 flex justify-between text-sm">
+        <span>Participants</span>
+        <span class="font-semibold">45</span>
+      </div>
+
+      <div class="mt-2 flex justify-between text-sm">
+        <span>Duration</span>
+        <span class="font-semibold">2 Days</span>
+      </div>
+
+      <button class="mt-6 w-full bg-indigo-50 text-indigo-700 py-3 rounded-xl">
+        View Detail
+      </button>
+    </div>
+
+  </div>
+
+</div>
+`,
+
+schedule: `
+<div class="bg-white rounded-2xl shadow-sm p-6">
+
+  <h2 class="text-2xl font-bold mb-6">
+    Jadwal Pelatihan
+  </h2>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+
+    <div class="border rounded-2xl p-4">
+      <p class="text-sm text-slate-500">12 Mei 2026</p>
+      <h3 class="font-bold mt-2">Leadership Training</h3>
+      <p class="text-sm text-slate-500 mt-1">
+        Room A
+      </p>
+    </div>
+
+    <div class="border rounded-2xl p-4">
+      <p class="text-sm text-slate-500">15 Mei 2026</p>
+      <h3 class="font-bold mt-2">Safety Awareness</h3>
+      <p class="text-sm text-slate-500 mt-1">
+        Room B
+      </p>
+    </div>
+
+  </div>
+
+</div>
+`,
+
+attendance: `
+<div class="bg-white rounded-2xl shadow-sm p-6">
+
+  <h2 class="text-2xl font-bold mb-6">
+    Absensi Training
+  </h2>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+    <div class="bg-slate-100 rounded-2xl p-6 text-center">
+      <h3 class="font-bold text-lg">Hadir</h3>
+      <p class="text-5xl font-bold mt-4 text-emerald-600">
+        245
+      </p>
+    </div>
+
+    <div class="bg-slate-100 rounded-2xl p-6 text-center">
+      <h3 class="font-bold text-lg">Tidak Hadir</h3>
+      <p class="text-5xl font-bold mt-4 text-rose-600">
+        12
+      </p>
+    </div>
+
+    <div class="bg-slate-100 rounded-2xl p-6 text-center">
+      <h3 class="font-bold text-lg">Pending</h3>
+      <p class="text-5xl font-bold mt-4 text-amber-600">
+        8
+      </p>
+    </div>
+
+  </div>
+
+</div>
+`,
+
+evaluation: `
+<div class="bg-white rounded-2xl shadow-sm p-6">
+
+  <h2 class="text-2xl font-bold mb-6">
+    Evaluasi Training
+  </h2>
+
+  <div class="space-y-5">
+
+    <div>
+      <div class="flex justify-between mb-2">
+        <span>Reaction</span>
+        <span>92%</span>
+      </div>
+
+      <div class="w-full bg-slate-200 rounded-full h-3">
+        <div class="bg-indigo-600 h-3 rounded-full w-[92%]"></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="flex justify-between mb-2">
+        <span>Learning</span>
+        <span>88%</span>
+      </div>
+
+      <div class="w-full bg-slate-200 rounded-full h-3">
+        <div class="bg-emerald-600 h-3 rounded-full w-[88%]"></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="flex justify-between mb-2">
+        <span>Behavior</span>
+        <span>81%</span>
+      </div>
+
+      <div class="w-full bg-slate-200 rounded-full h-3">
+        <div class="bg-amber-500 h-3 rounded-full w-[81%]"></div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+`,
+
+competency: `
+<div class="bg-white rounded-2xl shadow-sm p-6">
+
+  <h2 class="text-2xl font-bold mb-6">
+    Competency Matrix
+  </h2>
+
+  <div class="overflow-x-auto">
+
+    <table class="w-full">
+
+      <thead>
+        <tr class="border-b">
+          <th class="text-left py-3">Nama</th>
+          <th class="text-left py-3">Skill</th>
+          <th class="text-left py-3">Current</th>
+          <th class="text-left py-3">Target</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <tr class="border-b">
+          <td class="py-4">Budi</td>
+          <td>Leadership</td>
+          <td>3</td>
+          <td>5</td>
+        </tr>
+
+        <tr class="border-b">
+          <td class="py-4">Siti</td>
+          <td>Communication</td>
+          <td>4</td>
+          <td>5</td>
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>
+`,
+
+reports: `
+<div class="space-y-6">
+
+  <div class="flex justify-between items-center">
+
+    <div>
+      <h2 class="text-2xl font-bold">
+        Reports & Analytics
+      </h2>
+
+      <p class="text-slate-500">
+        Training KPI dan efektivitas
+      </p>
+    </div>
+
+    <button class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-3 rounded-xl">
+      Export Excel
+    </button>
+
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+
+    <div class="bg-white rounded-2xl p-6 shadow-sm">
+      <p class="text-slate-500">Training Hours</p>
+      <h3 class="text-4xl font-bold mt-3">2,450</h3>
+    </div>
+
+    <div class="bg-white rounded-2xl p-6 shadow-sm">
+      <p class="text-slate-500">ROTI</p>
+      <h3 class="text-4xl font-bold mt-3">156%</h3>
+    </div>
+
+  </div>
+
+</div>
+`,
+
+settings: `
+<div class="bg-white rounded-2xl shadow-sm p-6">
+
+  <h2 class="text-2xl font-bold mb-6">
+    Settings
+  </h2>
+
+  <div class="space-y-6">
+
+    <div>
+      <label class="block font-semibold mb-2">
+        Company Name
+      </label>
+
+      <input type="text"
+        class="w-full border rounded-xl px-4 py-3"
+        value="PT Training Indonesia">
+    </div>
+
+    <div>
+      <label class="block font-semibold mb-2">
+        Email Notification
+      </label>
+
+      <select class="w-full border rounded-xl px-4 py-3">
+        <option>Enabled</option>
+        <option>Disabled</option>
+      </select>
+    </div>
+
+    <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-3 rounded-xl">
+      Save Settings
+    </button>
+
+  </div>
+
+</div>
+`
+
+};
+
+function loadPage(page) {
+
+  const role = localStorage.getItem('role');
+  const allowedPages = {
+    'karyawan': ['dashboard', 'trainings', 'schedule', 'attendance', 'evaluation'],
+    'admin': ['dashboard', 'employees', 'trainings', 'schedule', 'attendance', 'evaluation', 'competency', 'reports'],
+    'super admin': ['dashboard', 'employees', 'trainings', 'schedule', 'attendance', 'evaluation', 'competency', 'reports', 'settings']
+  };
+  if(role && allowedPages[role] && !allowedPages[role].includes(page)) {
+    alert('Access denied for your role');
+    return;
+  }
+
+  document.getElementById("app").innerHTML = pages[page];
+
+  document.querySelectorAll(".menu-btn").forEach(btn => {
+    btn.classList.remove("menu-active");
+  });
+
+  event.target.classList.add("menu-active");
+
+  lucide.createIcons();
+
+  if(page === 'dashboard') {
+    renderChart();
+  }
+}
+
+function toggleSidebar() {
+  document.getElementById("sidebar").classList.toggle("hidden");
+}
+
+function renderChart() {
+
+  const ctx = document.getElementById('trainingChart');
+
+  if(!ctx) return;
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun'],
+      datasets: [{
+        label: 'Training',
+        data: [12, 19, 10, 15, 22, 18],
+        borderRadius: 8
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          display: false
+        }
+      }
+    }
+  });
+}
+
+checkLogin();
+
+lucide.createIcons();
+
+</script>
+
+</div>
+
+</body>
+</html>
