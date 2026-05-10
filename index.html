@@ -720,33 +720,66 @@ employees: `
           <th class="text-left py-3">Nama</th>
           <th class="text-left py-3">Departemen</th>
           <th class="text-left py-3">Jabatan</th>
+          <th class="text-left py-3">Training Akan Diikuti</th>
+          <th class="text-left py-3">Training Selesai</th>
+          <th class="text-left py-3">Progress</th>
           <th class="text-left py-3">Status</th>
         </tr>
       </thead>
 
       <tbody>
 
-        <tr class="border-b hover:bg-slate-50">
+        <tr class="border-b hover:bg-slate-50 align-top">
           <td class="py-4">EMP001</td>
           <td>Budi Santoso</td>
           <td>Production</td>
           <td>Operator</td>
-          <td>
-            <span class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-sm">
-              Active
-            </span>
+          <td class="py-4">
+            <div class="space-y-2 text-sm text-slate-600">
+              <div class="bg-slate-100 px-3 py-2 rounded-2xl">Digital Marketing</div>
+              <div class="bg-slate-100 px-3 py-2 rounded-2xl">Safety &amp; K3</div>
+            </div>
+          </td>
+          <td class="py-4">
+            <div class="space-y-2 text-sm text-slate-600">
+              <div class="bg-emerald-100 px-3 py-2 rounded-2xl">Leadership Workshop</div>
+            </div>
+          </td>
+          <td class="py-4">
+            <div class="text-sm text-slate-600 mb-2">75%</div>
+            <div class="w-full bg-slate-200 rounded-full h-2">
+              <div class="bg-indigo-600 h-2 rounded-full" style="width:75%"></div>
+            </div>
+          </td>
+          <td class="py-4">
+            <span class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-sm">Active</span>
           </td>
         </tr>
 
-        <tr class="border-b hover:bg-slate-50">
+        <tr class="border-b hover:bg-slate-50 align-top">
           <td class="py-4">EMP002</td>
           <td>Siti Aminah</td>
           <td>HRD</td>
           <td>Staff HR</td>
-          <td>
-            <span class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-sm">
-              Active
-            </span>
+          <td class="py-4">
+            <div class="space-y-2 text-sm text-slate-600">
+              <div class="bg-slate-100 px-3 py-2 rounded-2xl">Communication Skills</div>
+              <div class="bg-slate-100 px-3 py-2 rounded-2xl">Customer Service</div>
+            </div>
+          </td>
+          <td class="py-4">
+            <div class="space-y-2 text-sm text-slate-600">
+              <div class="bg-emerald-100 px-3 py-2 rounded-2xl">Excel Mastery</div>
+            </div>
+          </td>
+          <td class="py-4">
+            <div class="text-sm text-slate-600 mb-2">60%</div>
+            <div class="w-full bg-slate-200 rounded-full h-2">
+              <div class="bg-indigo-600 h-2 rounded-full" style="width:60%"></div>
+            </div>
+          </td>
+          <td class="py-4">
+            <span class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-sm">Active</span>
           </td>
         </tr>
 
@@ -767,7 +800,7 @@ trainings: `
     <div>
       <h2 class="text-2xl font-bold">Training Management</h2>
       <p class="text-slate-500">
-        Kelola program pelatihan perusahaan
+        Kelola pelatihan online dan offline dengan pre test, post test, dan hasil.
       </p>
     </div>
 
@@ -777,30 +810,80 @@ trainings: `
 
   </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+  <div class="grid gap-6">
 
-    <div class="bg-white rounded-2xl p-6 shadow-sm">
-      <h3 class="font-bold text-lg">
-        Leadership Training
-      </h3>
+    <div class="bg-white rounded-2xl shadow-sm p-6">
+      <h3 class="text-xl font-bold mb-4">Online Training</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
 
-      <p class="text-slate-500 mt-2">
-        Softskill Development
-      </p>
+        <div class="bg-slate-50 rounded-2xl p-6 shadow-sm">
+          <h4 class="font-bold text-lg">Digital Marketing</h4>
+          <p class="text-slate-500 mt-2">Pelatihan online untuk strategi pemasaran digital dan analitik.</p>
+          <div class="mt-4 text-sm text-slate-600 space-y-2">
+            <div class="flex justify-between"><span>Duration</span><span>4 Weeks</span></div>
+            <div class="flex justify-between"><span>Mode</span><span>Online</span></div>
+          </div>
+          <div class="mt-5 grid grid-cols-2 gap-2">
+            <button class="py-2 rounded-xl bg-slate-100 text-slate-700">Pre Test</button>
+            <button class="py-2 rounded-xl bg-slate-100 text-slate-700">Post Test</button>
+            <button class="py-2 rounded-xl bg-slate-100 text-slate-700">Result</button>
+            <button class="py-2 rounded-xl bg-indigo-600 text-white">Mulai Training</button>
+          </div>
+        </div>
 
-      <div class="mt-5 flex justify-between text-sm">
-        <span>Participants</span>
-        <span class="font-semibold">45</span>
+        <div class="bg-slate-50 rounded-2xl p-6 shadow-sm">
+          <h4 class="font-bold text-lg">Communication Skills</h4>
+          <p class="text-slate-500 mt-2">Pelatihan untuk komunikasi efektif dan presentasi secara online.</p>
+          <div class="mt-4 text-sm text-slate-600 space-y-2">
+            <div class="flex justify-between"><span>Duration</span><span>3 Weeks</span></div>
+            <div class="flex justify-between"><span>Mode</span><span>Online</span></div>
+          </div>
+          <div class="mt-5 grid grid-cols-2 gap-2">
+            <button class="py-2 rounded-xl bg-slate-100 text-slate-700">Pre Test</button>
+            <button class="py-2 rounded-xl bg-slate-100 text-slate-700">Post Test</button>
+            <button class="py-2 rounded-xl bg-slate-100 text-slate-700">Result</button>
+            <button class="py-2 rounded-xl bg-indigo-600 text-white">Mulai Training</button>
+          </div>
+        </div>
+
       </div>
+    </div>
 
-      <div class="mt-2 flex justify-between text-sm">
-        <span>Duration</span>
-        <span class="font-semibold">2 Days</span>
+    <div class="bg-white rounded-2xl shadow-sm p-6">
+      <h3 class="text-xl font-bold mb-4">Offline Training</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+
+        <div class="bg-slate-50 rounded-2xl p-6 shadow-sm">
+          <h4 class="font-bold text-lg">Leadership Workshop</h4>
+          <p class="text-slate-500 mt-2">Workshop tatap muka untuk kepemimpinan dan kerja tim.</p>
+          <div class="mt-4 text-sm text-slate-600 space-y-2">
+            <div class="flex justify-between"><span>Date</span><span>20 Mei 2026</span></div>
+            <div class="flex justify-between"><span>Venue</span><span>Room A</span></div>
+          </div>
+          <div class="mt-5 grid grid-cols-2 gap-2">
+            <button class="py-2 rounded-xl bg-slate-100 text-slate-700">Pre Test</button>
+            <button class="py-2 rounded-xl bg-slate-100 text-slate-700">Post Test</button>
+            <button class="py-2 rounded-xl bg-slate-100 text-slate-700">Result</button>
+            <button class="py-2 rounded-xl bg-indigo-600 text-white">Mulai Training</button>
+          </div>
+        </div>
+
+        <div class="bg-slate-50 rounded-2xl p-6 shadow-sm">
+          <h4 class="font-bold text-lg">Safety & K3</h4>
+          <p class="text-slate-500 mt-2">Pelatihan offline untuk kesehatan dan keselamatan kerja.</p>
+          <div class="mt-4 text-sm text-slate-600 space-y-2">
+            <div class="flex justify-between"><span>Date</span><span>25 Mei 2026</span></div>
+            <div class="flex justify-between"><span>Venue</span><span>Room B</span></div>
+          </div>
+          <div class="mt-5 grid grid-cols-2 gap-2">
+            <button class="py-2 rounded-xl bg-slate-100 text-slate-700">Pre Test</button>
+            <button class="py-2 rounded-xl bg-slate-100 text-slate-700">Post Test</button>
+            <button class="py-2 rounded-xl bg-slate-100 text-slate-700">Result</button>
+            <button class="py-2 rounded-xl bg-indigo-600 text-white">Mulai Training</button>
+          </div>
+        </div>
+
       </div>
-
-      <button class="mt-6 w-full bg-indigo-50 text-indigo-700 py-3 rounded-xl">
-        View Detail
-      </button>
     </div>
 
   </div>
