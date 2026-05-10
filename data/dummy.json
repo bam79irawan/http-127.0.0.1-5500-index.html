@@ -1,1 +1,355 @@
-
+{
+  "users": [
+    {
+      "id": 1,
+      "nik": "EMP001",
+      "fullname": "Budi Santoso",
+      "email": "budi@example.com",
+      "password": "pass123",
+      "department": "Production",
+      "position": "Operator",
+      "role": "karyawan",
+      "status": "active",
+      "photo": "",
+      "created_at": "2026-01-01T00:00:00Z"
+    },
+    {
+      "id": 2,
+      "nik": "EMP002",
+      "fullname": "Siti Aminah",
+      "email": "siti@example.com",
+      "password": "pass123",
+      "department": "HRD",
+      "position": "Staff HR",
+      "role": "karyawan",
+      "status": "active",
+      "photo": "",
+      "created_at": "2026-01-02T00:00:00Z"
+    },
+    {
+      "id": 3,
+      "nik": "ADM001",
+      "fullname": "Admin User",
+      "email": "admin@example.com",
+      "password": "admin123",
+      "department": "IT",
+      "position": "System Admin",
+      "role": "admin",
+      "status": "active",
+      "photo": "",
+      "created_at": "2026-01-01T00:00:00Z"
+    },
+    {
+      "id": 4,
+      "nik": "SUP001",
+      "fullname": "Super Admin",
+      "email": "superadmin@example.com",
+      "password": "super123",
+      "department": "Management",
+      "position": "Super Administrator",
+      "role": "super admin",
+      "status": "active",
+      "photo": "",
+      "created_at": "2026-01-01T00:00:00Z"
+    }
+  ],
+  "trainings": [
+    {
+      "id": 1,
+      "title": "Digital Marketing",
+      "description": "Pelatihan online untuk strategi pemasaran digital dan analitik",
+      "type": "online",
+      "category": "Marketing",
+      "duration": "4 Weeks",
+      "venue": "Online Platform",
+      "start_date": "2026-05-15",
+      "end_date": "2026-06-15",
+      "created_by": 3
+    },
+    {
+      "id": 2,
+      "title": "Communication Skills",
+      "description": "Pelatihan untuk komunikasi efektif dan presentasi secara online",
+      "type": "online",
+      "category": "Soft Skills",
+      "duration": "3 Weeks",
+      "venue": "Online Platform",
+      "start_date": "2026-05-20",
+      "end_date": "2026-06-10",
+      "created_by": 3
+    },
+    {
+      "id": 3,
+      "title": "Leadership Workshop",
+      "description": "Workshop tatap muka untuk kepemimpinan dan kerja tim",
+      "type": "offline",
+      "category": "Management",
+      "duration": "2 Days",
+      "venue": "Room A",
+      "start_date": "2026-05-20",
+      "end_date": "2026-05-21",
+      "created_by": 3
+    },
+    {
+      "id": 4,
+      "title": "Safety & K3",
+      "description": "Pelatihan offline untuk kesehatan dan keselamatan kerja",
+      "type": "offline",
+      "category": "Safety",
+      "duration": "1 Day",
+      "venue": "Room B",
+      "start_date": "2026-05-25",
+      "end_date": "2026-05-25",
+      "created_by": 3
+    },
+    {
+      "id": 5,
+      "title": "Excel Mastery",
+      "description": "Pelatihan lanjutan Microsoft Excel untuk analisis data",
+      "type": "online",
+      "category": "Technical",
+      "duration": "2 Weeks",
+      "venue": "Online Platform",
+      "start_date": "2026-04-01",
+      "end_date": "2026-04-15",
+      "created_by": 3
+    },
+    {
+      "id": 6,
+      "title": "Customer Service Excellence",
+      "description": "Pelatihan untuk meningkatkan kualitas layanan pelanggan",
+      "type": "offline",
+      "category": "Service",
+      "duration": "1 Day",
+      "venue": "Training Room C",
+      "start_date": "2026-03-15",
+      "end_date": "2026-03-15",
+      "created_by": 3
+    }
+  ],
+  "user_trainings": [
+    {
+      "id": 1,
+      "user_id": 1,
+      "training_id": 1,
+      "status": "in_progress",
+      "progress_percentage": 75,
+      "enrolled_at": "2026-05-10T00:00:00Z",
+      "pre_test_score": 85,
+      "post_test_score": null,
+      "result_status": "pending"
+    },
+    {
+      "id": 2,
+      "user_id": 1,
+      "training_id": 4,
+      "status": "enrolled",
+      "progress_percentage": 0,
+      "enrolled_at": "2026-05-10T00:00:00Z",
+      "pre_test_score": null,
+      "post_test_score": null,
+      "result_status": "pending"
+    },
+    {
+      "id": 3,
+      "user_id": 1,
+      "training_id": 3,
+      "status": "completed",
+      "progress_percentage": 100,
+      "enrolled_at": "2026-05-01T00:00:00Z",
+      "completed_at": "2026-05-21T00:00:00Z",
+      "pre_test_score": 78,
+      "post_test_score": 92,
+      "result_status": "pass"
+    },
+    {
+      "id": 4,
+      "user_id": 2,
+      "training_id": 2,
+      "status": "in_progress",
+      "progress_percentage": 60,
+      "enrolled_at": "2026-05-10T00:00:00Z",
+      "pre_test_score": 88,
+      "post_test_score": null,
+      "result_status": "pending"
+    },
+    {
+      "id": 5,
+      "user_id": 2,
+      "training_id": 6,
+      "status": "enrolled",
+      "progress_percentage": 0,
+      "enrolled_at": "2026-05-10T00:00:00Z",
+      "pre_test_score": null,
+      "post_test_score": null,
+      "result_status": "pending"
+    },
+    {
+      "id": 6,
+      "user_id": 2,
+      "training_id": 5,
+      "status": "completed",
+      "progress_percentage": 100,
+      "enrolled_at": "2026-04-01T00:00:00Z",
+      "completed_at": "2026-04-15T00:00:00Z",
+      "pre_test_score": 82,
+      "post_test_score": 95,
+      "result_status": "pass"
+    }
+  ],
+  "schedules": [
+    {
+      "id": 1,
+      "training_id": 3,
+      "schedule_date": "2026-05-20",
+      "start_time": "09:00",
+      "end_time": "17:00",
+      "venue": "Room A",
+      "trainer": "Dr. Leadership Expert",
+      "notes": "Workshop intensif dengan simulasi"
+    },
+    {
+      "id": 2,
+      "training_id": 4,
+      "schedule_date": "2026-05-25",
+      "start_time": "08:00",
+      "end_time": "16:00",
+      "venue": "Room B",
+      "trainer": "Safety Specialist",
+      "notes": "Termasuk praktik lapangan"
+    },
+    {
+      "id": 3,
+      "training_id": 6,
+      "schedule_date": "2026-03-15",
+      "start_time": "09:00",
+      "end_time": "17:00",
+      "venue": "Training Room C",
+      "trainer": "Customer Service Expert",
+      "notes": "Role playing dan case study"
+    }
+  ],
+  "attendance": [
+    {
+      "id": 1,
+      "user_id": 1,
+      "training_id": 3,
+      "schedule_id": 1,
+      "attendance_date": "2026-05-20",
+      "status": "present",
+      "check_in_time": "08:45",
+      "check_out_time": "17:15",
+      "notes": "Hadir penuh"
+    },
+    {
+      "id": 2,
+      "user_id": 2,
+      "training_id": 5,
+      "attendance_date": "2026-04-01",
+      "status": "present",
+      "check_in_time": "09:00",
+      "check_out_time": "16:30",
+      "notes": "Aktif dalam diskusi"
+    }
+  ],
+  "evaluations": [
+    {
+      "id": 1,
+      "user_id": 1,
+      "training_id": 3,
+      "evaluator_id": 3,
+      "evaluation_date": "2026-05-21",
+      "rating": 5,
+      "feedback": "Sangat baik dalam leadership workshop, menunjukkan kemajuan signifikan",
+      "competencies": "Leadership, Teamwork, Communication"
+    },
+    {
+      "id": 2,
+      "user_id": 2,
+      "training_id": 5,
+      "evaluator_id": 3,
+      "evaluation_date": "2026-04-15",
+      "rating": 4,
+      "feedback": "Kuasai Excel dengan baik, perlu lebih banyak praktik advanced",
+      "competencies": "Technical Skills, Data Analysis"
+    }
+  ],
+  "competencies": [
+    {
+      "id": 1,
+      "name": "Digital Marketing",
+      "description": "Knowledge of digital marketing strategies",
+      "category": "Marketing"
+    },
+    {
+      "id": 2,
+      "name": "Communication",
+      "description": "Effective communication skills",
+      "category": "Soft Skills"
+    },
+    {
+      "id": 3,
+      "name": "Leadership",
+      "description": "Leadership and team management",
+      "category": "Management"
+    },
+    {
+      "id": 4,
+      "name": "Safety Awareness",
+      "description": "Knowledge of workplace safety",
+      "category": "Safety"
+    },
+    {
+      "id": 5,
+      "name": "Excel Proficiency",
+      "description": "Advanced Excel skills for data analysis",
+      "category": "Technical"
+    },
+    {
+      "id": 6,
+      "name": "Customer Service",
+      "description": "Excellence in customer service delivery",
+      "category": "Service"
+    }
+  ],
+  "user_competencies": [
+    {
+      "id": 1,
+      "user_id": 1,
+      "competency_id": 3,
+      "level": 3,
+      "achieved_date": "2026-05-21",
+      "status": "active"
+    },
+    {
+      "id": 2,
+      "user_id": 2,
+      "competency_id": 5,
+      "level": 4,
+      "achieved_date": "2026-04-15",
+      "status": "active"
+    },
+    {
+      "id": 3,
+      "user_id": 2,
+      "competency_id": 6,
+      "level": 2,
+      "achieved_date": "2026-03-15",
+      "status": "active"
+    }
+  ],
+  "settings": [
+    {
+      "id": 1,
+      "key_name": "company_name",
+      "value": "PT Training Indonesia",
+      "description": "Company name for the system"
+    },
+    {
+      "id": 2,
+      "key_name": "email_notification",
+      "value": "enabled",
+      "description": "Enable/disable email notifications"
+    }
+  ]
+}
